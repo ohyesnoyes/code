@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SCIP</title>
+    <link id="theme" rel="stylesheet" href="node_modules\bootstrap\dist\css\bootstrap.min.css">
+    
+    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous"> -->
+</head>
+<body data-bs-theme="t=light">
+    <div class=" banner"bg-black></div>
+    <main id="main" class="container-fluid p-2">
+        <div>
+            <blockquote class="blockquote text-center">
+                <h3>Supporting Computers for IT Practicum [scip]</h3>
+            </blockquote>
+            <figcaption class="blockquote-footer text-center text-info ">
+                A place for n00bs to learn about p00ters
+            </figcaption>
+          </div>
+
+        
+        <section class="container-fluid m-2 p-2">
+            
+            <nav class="navbar navbar-expand-lg bg-secondary rounded">
+                <div class="container-fluid">
+                  <div class="navbar-brand m-1 " href="#"><strong><h3>[scip]</h3></strong></div>
+                  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                  </button>
+                  <div class="collapse navbar-collapse" id="navbarColor01">
+                    <ul class="navbar-nav me-auto">
+                        <li class="nav-item m-1">
+                          <a class="nav-link" href="#">Catalog</a>
+                        </li>
+                        <li class="nav-item m-1" >
+                          <a class="nav-link" href="#">Forum</a>
+                        </li>
+                        <li class="nav-item m-1">
+                          <a class="nav-link" href="#">About</a>
+                        </li>
+
+                      </li>
+                    </ul>
+
+                    <div class="btn-group">
+                      <label for="modSelect" class="form-label m-2">Module:</label>
+                      <div id="modSelect" class="nav-item m-1">
+                        <select class="form-select nav-item" name="modSelect" id="modSelect">
+                          <option onclick="loadContent(1)">Mod 1</option>
+                          <option onclick="loadContent(2)">Mod 2</option>
+                          <option onclick="loadContent(3)">Mod 3</option>
+                          <option onclick="loadContent(4)">Mod 4</option>
+                          <option onclick="loadContent(5)">Mod 5</option>
+                          <option onclick="loadContent(6)">Mod 6</option>
+                          <option onclick="loadContent(7)">Mod 7</option>
+                          <option onclick="loadContent(8)">Mod 8</option>
+                        </select>
+                      </div>
+                    </div>
+                    
+
+                    <div class="btn-group m-2 p-2">
+                      <button class="btn btn-info" type="button" onclick="launchAuth()">Sign In</button>
+                      <!-- <button class="btn btn-light text-info " type="button" onclick="toggleDarkMode()"><strong>Theme</strong></button> -->
+                      <button class="btn btn-outline-info " type="button" onclick="launchVMSelect()">Launch <i class="fa fa-television" aria-hidden="true"></i></button>                 
+                    </div>
+                     
+                    <div class="bg-black bg-opacity-50 p-2 rounded">
+                      <label for="themeSelect" class="form-label text-white">Theme:</label>
+                      <select id="themeSelect" class="bg-light text-dark form-select"></select>
+                      
+                    </div>
+                  </div>
+                  
+                </div>
+                
+              </nav>
+        </section>
+        <section id="contentWindow" class="container-fluid bg-opacity-25 bg-black rounded m-2 p-2">
+           bs5nav
+        </section>
+       
+    </main>
+    <footer class="container-fluid bg-opacity-50 bg-black text-center m-2 p-2 rounded">
+             
+        
+    </footer>
+    <script>
+      //https://bootswatch.com/api/5.json
+      //
+          fetch('bootswatch-api.json')
+          .then(response => response.json())
+          .then(data => load(data));
+
+
+
+        function load(data) {
+          const themes = data.themes;
+          const select = document.getElementById('themeSelect');
+          
+          themes.forEach((value, index) => {
+            const option = document.createElement('option');
+            option.value = index;
+            option.textContent = value.name;
+            
+            select.append(option);
+          });
+          
+          select.addEventListener('change', (e) => {
+            const theme = themes[e.target.value];
+            document.querySelector('#theme').setAttribute('href', theme.css);
+            document.getElementsByTagName('body').textContent = theme.name;
+          });
+          
+          const changeEvent = new Event('change');
+          select.dispatchEvent(changeEvent);
+        }
+
+        function launchAuth (){
+          alert('you tried to sign in, but that functionality doesn\'t exist yet')
+        }
+
+        function launchVMSelect (){
+          alert('this is the vm manager');
+        }
+
+        function loadContent(modNum){
+          let cWin = $('#contentWindow');
+          var lesson;
+          $.getJSON("./mod"+ modNum +"/module" + modNum + ".json", lesson,
+            function (data, textStatus, jqXHR) {
+              cWin.html('<nav class="navbar navbar-expand navbar-light bg-light"><ul class="nav navbar-nav"><li class="nav-item"><a class="nav-link active" href="#" aria-current="page">Lesson 1 <span class="visually-hidden">(current)</span></a></li><li class="nav-item"><a class="nav-link" href="#">Lesson 2</a></li></ul></nav>'
+              )
+              cWin.append('<h2>' + data.title + '</h2>')
+              cWin.append('<p>Description: ' + data.description + '</p>')
+              cWin.append('<img src="' + data.thumbnail + '" />')
+              
+
+            }
+          );
+
+          console.log($.getJSON("./mod"+ modNum +"/module" + modNum + ".json"));
+        }
+
+
+        
+    </script>
+    
+    <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script> -->
+    <script src="https://kit.fontawesome.com/d569d1f071.js" crossorigin="anonymous"></script>
+    <script src="node_modules/jquery/dist/jquery.min.js"></script>
+</body>
+</html>
